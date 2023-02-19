@@ -1,21 +1,32 @@
 package dal
 
-import "github.com/prattnj/fms-go/model"
+import (
+	"database/sql"
+	"github.com/prattnj/fms-go/model"
+)
 
-func addToken(token model.AuthToken) {
+func T_insert(db *sql.DB, token model.AuthToken) {
 	// todo add token
 }
 
-func findToken(token string) model.AuthToken {
+func T_find(db *sql.DB, token string) model.AuthToken {
 	// todo find token
 	return model.AuthToken{}
 }
 
-func getUsername(token string) string {
+func T_getUsername(db *sql.DB, token string) string {
 	// todo get username
 	return ""
 }
 
-func clearAuthToken() {
-	// todo clear authtoken table
+func T_clear(db *sql.DB) error {
+	stmt, err := db.Prepare("DELETE FROM authtoken")
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec()
+	if err != nil {
+		return err
+	}
+	return nil
 }

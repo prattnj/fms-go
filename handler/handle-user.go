@@ -21,6 +21,9 @@ func HandleLogin(c echo.Context) error {
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
+		if resp.Message == "Internal server error" {
+			return c.JSON(500, resp)
+		}
 		return c.JSON(400, resp)
 	}
 }
@@ -39,6 +42,9 @@ func HandleRegister(c echo.Context) error {
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
+		if resp.Message == "Internal server error" {
+			return c.JSON(500, resp)
+		}
 		return c.JSON(400, resp)
 	}
 }

@@ -1,12 +1,56 @@
 package dal
 
-import "database/sql"
+import (
+	"bufio"
+	"database/sql"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"os"
+)
 
-func db() *sql.DB {
-	database, err := sql.Open("sqlite3", "fms.db")
+func Db() *sql.DB {
+	password := getPassword()
+	if password == "" {
+		return nil
+	}
+	database, err := sql.Open("mysql", "pratt:"+password+"@tcp(localhost:3306)/fms")
 	if err != nil {
-		panic(err)
+		fmt.Println("Error opening database: ", err)
+		return nil
+	}
+	err = database.Ping()
+	if err != nil {
+		fmt.Println("Error pinging database: ", err)
+		return nil
 	}
 	return database
 
+}
+
+func DbClose(db *sql.DB) error {
+	err := db.Close()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func getPassword() string {
+	file, err := os.Open("nogit.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return ""
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println("Error closing file:", err)
+		}
+	}(file)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		return scanner.Text()
+	}
+	return ""
 }
