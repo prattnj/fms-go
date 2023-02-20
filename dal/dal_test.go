@@ -49,5 +49,6 @@ func TestUser(t *testing.T) {
 func handleTestError(t *testing.T, err error) {
 	if err != nil {
 		t.Error(err)
+		fmt.Print("RETURNING...\n")
 	}
 }
