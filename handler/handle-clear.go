@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/prattnj/fms-go/service"
 )
 
 func HandleClear(c echo.Context) error {
+
+	fmt.Print("Clearing database... ")
 
 	// Perform clear and return appropriate response
 	resp := service.Clear()
