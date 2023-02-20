@@ -1,12 +1,14 @@
 package dal
 
 import (
+	"fmt"
 	"github.com/prattnj/fms-go/model"
 	"testing"
 )
 
 func TestAuthtoken(t *testing.T) {
 	db := Db()
+	fmt.Print("hello1")
 	tx, err := db.Begin()
 	handleTestError(t, err)
 	token := model.AuthToken{AuthToken: "test", Username: "njpratt"}
