@@ -21,7 +21,7 @@ func main() {
 	e.POST("/user/login", handler.HandleLogin)
 	e.POST("/user/register", handler.HandleRegister)
 
-	err := e.StartAutoTLS(":8443")
+	err := e.StartAutoTLS(":3003")
 	if err != nil {
 		log.Fatal(err)
 	}
