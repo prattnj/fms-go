@@ -20,7 +20,7 @@ func TestAuthtoken(t *testing.T) {
 	if token2.AuthToken != token.AuthToken {
 		t.Error("Token not found")
 	}
-	err = T_clear(db)
+	//err = T_clear(db)
 	if err != nil {
 		t.Error(err)
 	}
