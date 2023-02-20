@@ -7,12 +7,16 @@ import (
 )
 
 func TestAuthtoken(t *testing.T) {
+
+	// Start transaction / set up
 	db := Db()
 	tx, err := db.Begin()
 	handleTestError(t, err)
 	token := model.AuthToken{AuthToken: "test", Username: "njpratt"}
 	err = T_clear(tx)
 	handleTestError(t, err)
+
+	// Test insert and find
 	err = T_insert(tx, token)
 	handleTestError(t, err)
 	token2, err := T_find(tx, "test")
@@ -20,11 +24,16 @@ func TestAuthtoken(t *testing.T) {
 	if token2.AuthToken != token.AuthToken {
 		t.Error("Token not found")
 	}
+
+	// Test clear and find
 	err = T_clear(tx)
-	fmt.Print("hello6\n")
 	handleTestError(t, err)
-	fmt.Print("hello7\n")
+	token3, err := T_find(tx, "test")
+	if token3.AuthToken != "" {
+		t.Error("Token not cleared")
+	}
 	err = tx.Rollback()
+	handleTestError(t, err)
 	err = DbClose(db)
 	handleTestError(t, err)
 }
