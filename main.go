@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/prattnj/fms-go/handler"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -20,6 +21,12 @@ func main() {
 	e.GET("/person/:personID", handler.HandlePersonID)
 	e.POST("/user/login", handler.HandleLogin)
 	e.POST("/user/register", handler.HandleRegister)
+	e.GET("/", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, `
+			<h1>Welcome to Echo!</h1>
+			<h3>TLS certificates automatically installed from Let's Encrypt :)</h3>
+		`)
+	})
 
 	err := e.StartAutoTLS(":3003")
 	if err != nil {
