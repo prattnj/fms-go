@@ -9,7 +9,7 @@ import (
 )
 
 func Db() *sql.DB {
-	password := getPassword()
+	password := GetPassword()
 	if password == "" {
 		return nil
 	}
@@ -35,7 +35,7 @@ func DbClose(db *sql.DB) error {
 	return nil
 }
 
-func getPassword() string {
+func GetPassword() string {
 	file, err := os.Open("nogit.txt")
 	if err != nil {
 		fmt.Println("Error opening file:", err)
