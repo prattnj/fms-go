@@ -8,8 +8,9 @@ import (
 
 func TestAuthtoken(t *testing.T) {
 	db := Db()
-	fmt.Print("hello1")
+	fmt.Print("hello1\n")
 	tx, err := db.Begin()
+	fmt.Print("hello2\n")
 	handleTestError(t, err)
 	token := model.AuthToken{AuthToken: "test", Username: "njpratt"}
 	err = T_clear(tx)
