@@ -25,12 +25,8 @@ func U_getGender(db *sql.DB, username string) string {
 	return "m"
 }
 
-func U_clear(db *sql.DB) error {
-	stmt, err := db.Prepare("DELETE FROM user")
-	if err != nil {
-		return err
-	}
-	_, err = stmt.Exec()
+func U_clear(tx *sql.Tx) error {
+	_, err := tx.Exec("DELETE FROM user;")
 	if err != nil {
 		return err
 	}

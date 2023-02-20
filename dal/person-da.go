@@ -18,12 +18,8 @@ func P_getForUsername(db *sql.DB, username string) []model.Person {
 	return []model.Person{}
 }
 
-func P_clear(db *sql.DB) error {
-	stmt, err := db.Prepare("DELETE FROM person")
-	if err != nil {
-		return err
-	}
-	_, err = stmt.Exec()
+func P_clear(tx *sql.Tx) error {
+	_, err := tx.Exec("DELETE FROM person;")
 	if err != nil {
 		return err
 	}

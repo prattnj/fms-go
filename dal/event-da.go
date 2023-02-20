@@ -24,18 +24,18 @@ func E_getForUsername(db *sql.DB, username string) []model.Event {
 	return []model.Event{}
 }
 
-func E_clear(db *sql.DB) error {
-	stmt, err := db.Prepare("DELETE FROM event")
-	if err != nil {
-		return err
-	}
-	_, err = stmt.Exec()
+func E_clear(tx *sql.Tx) error {
+	_, err := tx.Exec("DELETE FROM event;")
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func E_clearForUser(db *sql.DB, username string) {
-	// todo clear events for user
+func E_clearForUser(tx *sql.Tx, username string) error {
+	_, err := tx.Exec("DELETE FROM event WHERE username = ?;", username)
+	if err != nil {
+		return err
+	}
+	return nil
 }
