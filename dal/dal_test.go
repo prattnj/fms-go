@@ -30,6 +30,8 @@ func TestAuthtoken(t *testing.T) {
 	err = DbClose(db)
 	fmt.Print("hello9\n")
 	handleTestError(t, err)
+
+	fmt.Print("hello20\n")
 }
 
 func TestEvent(t *testing.T) {
