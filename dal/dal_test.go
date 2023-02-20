@@ -8,9 +8,7 @@ import (
 
 func TestAuthtoken(t *testing.T) {
 	db := Db()
-	fmt.Print("hello1\n")
 	tx, err := db.Begin()
-	fmt.Print("hello2\n")
 	handleTestError(t, err)
 	token := model.AuthToken{AuthToken: "test", Username: "njpratt"}
 	err = T_clear(tx)
@@ -19,19 +17,18 @@ func TestAuthtoken(t *testing.T) {
 	fmt.Print("hello4\n")
 	handleTestError(t, err)
 	token2, err := T_find(tx, "test")
+	fmt.Print("hello5\n")
 	handleTestError(t, err)
 	if token2.AuthToken != token.AuthToken {
 		t.Error("Token not found")
 	}
 	err = T_clear(tx)
+	fmt.Print("hello6\n")
 	handleTestError(t, err)
 	fmt.Print("hello7\n")
 	err = tx.Rollback()
 	err = DbClose(db)
-	fmt.Print("hello9\n")
 	handleTestError(t, err)
-
-	fmt.Print("hello20\n")
 }
 
 func TestEvent(t *testing.T) {
