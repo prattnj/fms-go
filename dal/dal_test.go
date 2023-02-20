@@ -25,8 +25,10 @@ func TestAuthtoken(t *testing.T) {
 	}
 	err = T_clear(tx)
 	handleTestError(t, err)
+	fmt.Print("hello7\n")
 	err = tx.Rollback()
 	err = DbClose(db)
+	fmt.Print("hello9\n")
 	handleTestError(t, err)
 }
 
