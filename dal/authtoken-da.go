@@ -2,6 +2,7 @@ package dal
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/prattnj/fms-go/model"
 )
 
@@ -31,6 +32,7 @@ func T_find(tx *sql.Tx, token string) (model.AuthToken, error) {
 }
 
 func T_clear(tx *sql.Tx) error {
+	fmt.Print("IN CLEAR: tx = " + fmt.Sprint(tx) + "\n")
 	_, err := tx.Exec("DELETE FROM authtoken;")
 	if err != nil {
 		return err
