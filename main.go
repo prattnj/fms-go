@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/prattnj/fms-go/handler"
+	"log"
 )
 
 func main() {
@@ -20,5 +21,8 @@ func main() {
 	e.POST("/user/login", handler.HandleLogin)
 	e.POST("/user/register", handler.HandleRegister)
 
-	e.Logger.Fatal(e.Start(":8080"))
+	err := e.StartAutoTLS(":8443")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
