@@ -7,7 +7,7 @@ import (
 
 func T_insert(db *sql.DB, token model.AuthToken) error {
 	// todo add token
-	stmt, err := db.Prepare("INSERT INTO Authtoken (authtoken, username) VALUES(?,?);")
+	stmt, err := db.Prepare("INSERT INTO authtoken (authtoken, username) VALUES(?,?);")
 	if err != nil {
 		return err
 	}
@@ -24,7 +24,7 @@ func T_insert(db *sql.DB, token model.AuthToken) error {
 
 func T_find(db *sql.DB, token string) (model.AuthToken, error) {
 	// todo find token
-	stmt, err := db.Prepare("SELECT * FROM Authtoken WHERE authtoken = ?;")
+	stmt, err := db.Prepare("SELECT * FROM authtoken WHERE authtoken = ?;")
 	if err != nil {
 		return model.AuthToken{}, err
 	}
