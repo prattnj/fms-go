@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/prattnj/fms-go/dal"
 	"github.com/prattnj/fms-go/model"
 )
@@ -13,7 +12,6 @@ func Clear() model.GenericResponse {
 		return model.GenericResponse{Success: false, Message: "Internal server error"}
 	}
 
-	fmt.Println("Clearing tables...")
 	err1 := dal.T_clear(db)
 	err2 := dal.U_clear(db)
 	err3 := dal.P_clear(db)
