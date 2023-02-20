@@ -16,6 +16,7 @@ func TestAuthtoken(t *testing.T) {
 	err = T_clear(tx)
 	handleTestError(t, err)
 	err = T_insert(tx, token)
+	fmt.Print("hello4\n")
 	handleTestError(t, err)
 	token2, err := T_find(tx, "test")
 	handleTestError(t, err)
