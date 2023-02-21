@@ -2,27 +2,61 @@ package dal
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/prattnj/fms-go/model"
 )
 
-// void insert(User), boolean validate(username, password), User find(username), String getGender(username), void clear
-
-func U_insert(db *sql.DB, user model.User) {
-	// todo insert user
+func U_insert(tx *sql.Tx, user model.User) error {
+	_, err := tx.Exec("INSERT INTO user (username, password, email, firstName, lastName, gender, personID) VALUES(?, ?, ?, ?, ?, ?, ?);",
+		user.Username, user.Password, user.Email, user.FirstName, user.LastName, user.Gender, user.PersonID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func U_find(db *sql.DB, username string) model.User {
-	// todo find user
-	return model.User{}
+func U_find(tx *sql.Tx, username string) (model.User, error) {
+	rows, err := tx.Query("SELECT * FROM user WHERE username = ?;", username)
+	if err != nil {
+		return model.User{}, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("Error closing rows:", err)
+		}
+	}(rows)
+	var user model.User
+	for rows.Next() {
+		err = rows.Scan(&user.Username, &user.Password, &user.Email, &user.FirstName, &user.LastName, &user.Gender, &user.PersonID)
+		if err != nil {
+			return model.User{}, err
+		}
+		return user, nil
+	}
+	return model.User{}, nil
 }
 
-func U_validate(db *sql.DB, username string, password string) bool {
-	// todo validate
-	return true
+func U_validate(tx *sql.Tx, username string, password string) (bool, error) {
+	rows, err := tx.Query("SELECT * FROM User WHERE username = ? AND password = ?;", username, password)
+	if err != nil {
+		return false, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("Error closing rows:", err)
+		}
+	}(rows)
+	return rows.Next(), nil
 }
 
-func U_getGender(db *sql.DB, username string) string {
-	return "m"
+func U_getGender(tx *sql.Tx, username string) (string, error) {
+	user, err := U_find(tx, username)
+	if err != nil {
+		return "", err
+	}
+	return user.Gender, nil
 }
 
 func U_clear(tx *sql.Tx) error {

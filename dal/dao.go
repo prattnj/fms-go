@@ -13,7 +13,7 @@ func Db() *sql.DB {
 	if password == "" {
 		return nil
 	}
-	database, err := sql.Open("mysql", "pratt:"+password+"@tcp(localhost:3306)/fms")
+	database, err := sql.Open("mysql", "pratt:"+password+"@tcp(tommy:3306)/fms")
 	if err != nil {
 		fmt.Println("Error opening database: ", err)
 		return nil

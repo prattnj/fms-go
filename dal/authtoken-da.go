@@ -19,20 +19,32 @@ func T_find(tx *sql.Tx, token string) (model.AuthToken, error) {
 	if err != nil {
 		return model.AuthToken{}, err
 	}
-	var authToken string
-	var username string
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("Error closing rows:", err)
+		}
+	}(rows)
+	var authToken model.AuthToken
 	for rows.Next() {
-		err = rows.Scan(&authToken, &username)
+		err = rows.Scan(&authToken.AuthToken, &authToken.Username)
 		if err != nil {
 			return model.AuthToken{}, err
 		}
-		return model.AuthToken{AuthToken: authToken, Username: username}, nil
+		return authToken, nil
 	}
 	return model.AuthToken{}, nil
 }
 
+func T_getUsername(tx *sql.Tx, token string) (string, error) {
+	authToken, err := T_find(tx, token)
+	if err != nil {
+		return "", err
+	}
+	return authToken.Username, nil
+}
+
 func T_clear(tx *sql.Tx) error {
-	fmt.Print("IN CLEAR: tx = " + fmt.Sprint(tx) + "\n")
 	_, err := tx.Exec("DELETE FROM authtoken;")
 	if err != nil {
 		return err

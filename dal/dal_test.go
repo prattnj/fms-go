@@ -32,13 +32,21 @@ func TestAuthtoken(t *testing.T) {
 	if token3.AuthToken != "" {
 		t.Error("Token not cleared")
 	}
-	err = tx.Rollback()
+	err = T_insert(tx, token)
 	handleTestError(t, err, 36)
+	username2, err := T_getUsername(tx, "test")
+	if username2 != token.Username {
+		t.Error("Username not found")
+	}
+
+	// Clean up
+	err = tx.Rollback()
+	handleTestError(t, err, 44)
 	err = DbClose(db)
-	handleTestError(t, err, 38)
+	handleTestError(t, err, 46)
 }
 
-func TestEvent(t *testing.T) {
+func TestUser(t *testing.T) {
 
 }
 
@@ -46,14 +54,14 @@ func TestPerson(t *testing.T) {
 
 }
 
-func TestUser(t *testing.T) {
+func TestEvent(t *testing.T) {
 
 }
 
-func handleTestError(t *testing.T, err error, line int) {
+func handleTestError(t *testing.T, err error, code int) {
 	if err != nil {
 		t.Error(err)
 		fmt.Println(err)
-		fmt.Printf("RETURNING (%d)...\n", line)
+		fmt.Printf("RETURNING (%d)...\n", code)
 	}
 }
