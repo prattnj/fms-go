@@ -105,6 +105,15 @@ func Fill(username string, generations string) model.GenericResponse {
 		}
 	}
 
+	err = tx.Commit()
+	if err != nil {
+		return serverError
+	}
+	err = dal.DbClose(db)
+	if err != nil {
+		return serverError
+	}
+
 	return model.GenericResponse{Success: true, Message: "Successfully added " + string(rune(len(fillPeople))) +
 		" persons and " + string(rune(len(fillEvents))) + " events to the database"}
 }
@@ -122,10 +131,7 @@ func generateData(numGen int, gender string) error {
 		return err
 	}
 
-	rootPerson, err := generatePerson(numGen, gender)
-	if err != nil {
-		return err
-	}
+	rootPerson := generatePerson(numGen, gender)
 	rootPerson.PersonID = fillUser.PersonID
 	rootPerson.FirstName = fillUser.FirstName
 	rootPerson.LastName = fillUser.LastName
@@ -136,7 +142,7 @@ func generateData(numGen int, gender string) error {
 	return nil
 }
 
-func generatePerson(numGen int, gender string) (model.Person, error) {
+func generatePerson(numGen int, gender string) model.Person {
 
 	var father model.Person
 	var mother model.Person
@@ -144,14 +150,8 @@ func generatePerson(numGen int, gender string) (model.Person, error) {
 	if numGen > 0 {
 
 		// Recursively generate parents
-		father, err := generatePerson(numGen-1, "m")
-		if err != nil {
-			return model.Person{}, err
-		}
-		mother, err := generatePerson(numGen-1, "f")
-		if err != nil {
-			return model.Person{}, err
-		}
+		father := generatePerson(numGen-1, "m")
+		mother := generatePerson(numGen-1, "f")
 
 		mother.SpouseID = father.PersonID
 		father.SpouseID = mother.PersonID
@@ -200,7 +200,7 @@ func generatePerson(numGen int, gender string) (model.Person, error) {
 		generateDeath(personID, birthYear)
 	}
 
-	return person, nil
+	return person
 }
 
 func generateBirth(personID string, numGen int) int {

@@ -6,7 +6,8 @@ import (
 )
 
 // Generic 500 response, used in all services
-var serverError = model.GenericResponse{Success: false, Message: "Internal server error"}
+var serverErrorStr = "Internal server error"
+var serverError = model.GenericResponse{Success: false, Message: serverErrorStr}
 
 var defaultIDLength = 32
 
