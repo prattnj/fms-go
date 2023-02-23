@@ -3,15 +3,16 @@ package handler
 import (
 	"encoding/json"
 	"github.com/labstack/echo/v4"
+	"github.com/prattnj/fms-go/dal"
 	"github.com/prattnj/fms-go/model"
 	"github.com/prattnj/fms-go/service"
 )
 
 func HandleLoad(c echo.Context) error {
 
-	/*if c.Request().Header.Get("Authorization") != dal.GetPassword() {
+	if c.Request().Header.Get("Authorization") != dal.GetPassword() {
 		return c.JSON(401, model.GenericResponse{Success: false, Message: "Bad token"})
-	}*/
+	}
 
 	// Convert request body
 	var req model.LoadRequest
