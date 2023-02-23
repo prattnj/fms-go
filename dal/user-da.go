@@ -38,7 +38,7 @@ func U_find(tx *sql.Tx, username string) (model.User, error) {
 }
 
 func U_validate(tx *sql.Tx, username string, password string) (bool, error) {
-	rows, err := tx.Query("SELECT * FROM User WHERE username = ? AND password = ?;", username, password)
+	rows, err := tx.Query("SELECT * FROM user WHERE username = ? AND password = ?;", username, password)
 	if err != nil {
 		return false, err
 	}

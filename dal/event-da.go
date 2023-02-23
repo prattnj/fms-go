@@ -38,7 +38,7 @@ func E_find(tx *sql.Tx, eventID string) (model.Event, error) {
 }
 
 func E_findBirth(tx *sql.Tx, personID string) (model.Event, error) {
-	rows, err := tx.Query("SELECT * FROM Event WHERE personID = ? AND (eventType = ? OR eventType = ? OR eventType = ?);", personID, "birth", "BIRTH", "Birth")
+	rows, err := tx.Query("SELECT * FROM event WHERE personID = ? AND (eventType = ? OR eventType = ? OR eventType = ?);", personID, "birth", "BIRTH", "Birth")
 	if err != nil {
 		return model.Event{}, err
 	}
