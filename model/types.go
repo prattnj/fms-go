@@ -37,3 +37,10 @@ type User struct {
 	Gender    string `json:"gender"`
 	PersonID  string `json:"personID"`
 }
+
+type Location struct {
+	Country   string  `json:"country"`
+	City      string  `json:"city"`
+	Latitude  float32 `json:"latitude"`
+	Longitude float32 `json:"longitude"`
+}

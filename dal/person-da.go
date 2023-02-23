@@ -6,7 +6,7 @@ import (
 	"github.com/prattnj/fms-go/model"
 )
 
-func P_insert(tx *sql.Tx, person model.Person) error {
+func P_insert(tx *sql.Tx, person *model.Person) error {
 	_, err := tx.Exec("INSERT INTO person (personID, associatedUsername, firstName, lastName, gender, fatherID, motherID, spouseID) VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
 		person.PersonID, person.AssociatedUsername, person.FirstName, person.LastName, person.Gender, person.FatherID, person.MotherID, person.SpouseID)
 	if err != nil {

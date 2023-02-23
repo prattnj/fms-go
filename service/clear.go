@@ -5,9 +5,6 @@ import (
 	"github.com/prattnj/fms-go/model"
 )
 
-// Generic 500 response, used in all services
-var serverError = model.GenericResponse{Success: false, Message: "Internal server error"}
-
 func Clear() model.GenericResponse {
 
 	db := dal.Db()

@@ -39,7 +39,7 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 		}
 	}
 	for person := range persons {
-		err := dal.P_insert(tx, persons[person])
+		err := dal.P_insert(tx, &persons[person])
 		if err != nil {
 			err := tx.Rollback()
 			if err != nil {
@@ -49,7 +49,7 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 		}
 	}
 	for event := range events {
-		err := dal.E_insert(tx, events[event])
+		err := dal.E_insert(tx, &events[event])
 		if err != nil {
 			err := tx.Rollback()
 			if err != nil {

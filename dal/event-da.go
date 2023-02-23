@@ -6,7 +6,7 @@ import (
 	"github.com/prattnj/fms-go/model"
 )
 
-func E_insert(tx *sql.Tx, event model.Event) error {
+func E_insert(tx *sql.Tx, event *model.Event) error {
 	_, err := tx.Exec("INSERT INTO event (eventID, associatedUsername, personID, latitude, longitude, country, city, eventType, year) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);",
 		event.EventID, event.AssociatedUsername, event.PersonID, event.Latitude, event.Longitude, event.Country, event.City, event.EventType, event.Year)
 	if err != nil {
