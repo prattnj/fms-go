@@ -13,7 +13,7 @@ func main() {
 	e.POST("/clear", handler.HandleClear)
 	e.GET("/event", handler.HandleEvent)
 	e.GET("/event/:eventID", handler.HandleEventID)
-	e.POST("/fill/:username/", handler.HandleFill)
+	e.POST("/fill/:username", handler.HandleFill)
 	e.POST("/fill/:username/:generations", handler.HandleFill)
 	e.POST("/load", handler.HandleLoad)
 	e.GET("/person", handler.HandlePerson)
