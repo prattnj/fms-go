@@ -10,6 +10,9 @@ func HandleFill(c echo.Context) error {
 	// Perform fill and return appropriate response
 	username := c.Param("username")
 	generations := c.Param("generations")
+	if generations == "" {
+		generations = "4"
+	}
 	resp := service.Fill(username, generations)
 	if resp.Success {
 		return c.JSON(200, resp)
