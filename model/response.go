@@ -10,7 +10,7 @@ type LoginResponse struct {
 	UserName  string `json:"username"`
 	PersonID  string `json:"personID"`
 	Success   bool   `json:"success"`
-	Message   string `json:"message"`
+	Message   string `json:"message,omitempty"`
 }
 
 type EventResponse struct {
