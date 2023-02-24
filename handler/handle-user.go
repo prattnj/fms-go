@@ -40,7 +40,7 @@ func HandleRegister(c echo.Context) error {
 	// Perform register and return appropriate response
 	resp := service.Register(req.Username, req.Password, req.Email, req.FirstName, req.LastName, req.Gender)
 	if resp.Success {
-		return c.JSON(200, resp)
+		return c.JSONPretty(200, resp, "	")
 	} else {
 		if resp.Message == "Internal server error" {
 			return c.JSON(500, resp)
