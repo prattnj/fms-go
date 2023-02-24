@@ -1,53 +1,53 @@
 package model
 
 type GenericResponse struct {
-	Message string `json:"message"`
+	Message string `json:"message,omitempty"`
 	Success bool   `json:"success"`
 }
 
 type LoginResponse struct {
-	AuthToken string `json:"authtoken"`
-	UserName  string `json:"username"`
-	PersonID  string `json:"personID"`
+	AuthToken string `json:"authtoken,omitempty"`
+	UserName  string `json:"username,omitempty"`
+	PersonID  string `json:"personID,omitempty"`
 	Success   bool   `json:"success"`
 	Message   string `json:"message,omitempty"`
 }
 
 type EventResponse struct {
-	Data    []Event `json:"data"`
+	Data    []Event `json:"data,omitempty"`
 	Success bool    `json:"success"`
-	Message string  `json:"message"`
+	Message string  `json:"message,omitempty"`
 }
 
 type EventIDResponse struct {
-	AssociatedUsername string  `json:"associatedUsername"`
-	EventID            string  `json:"eventID"`
-	PersonID           string  `json:"personID"`
-	Latitude           float32 `json:"latitude"`
-	Longitude          float32 `json:"longitude"`
-	Country            string  `json:"country"`
-	City               string  `json:"city"`
-	EventType          string  `json:"eventType"`
-	Year               int     `json:"year"`
+	AssociatedUsername string  `json:"associatedUsername,omitempty"`
+	EventID            string  `json:"eventID,omitempty"`
+	PersonID           string  `json:"personID,omitempty"`
+	Latitude           float32 `json:"latitude,omitempty"`
+	Longitude          float32 `json:"longitude,omitempty"`
+	Country            string  `json:"country,omitempty"`
+	City               string  `json:"city,omitempty"`
+	EventType          string  `json:"eventType,omitempty"`
+	Year               int     `json:"year,omitempty"`
 	Success            bool    `json:"success"`
-	Message            string  `json:"message"`
+	Message            string  `json:"message,omitempty"`
 }
 
 type PersonResponse struct {
-	Data    []Person `json:"data"`
+	Data    []Person `json:"data,omitempty"`
 	Success bool     `json:"success"`
-	Message string   `json:"message"`
+	Message string   `json:"message,omitempty"`
 }
 
 type PersonIDResponse struct {
-	AssociatedUsername string `json:"associatedUsername"`
-	PersonID           string `json:"personID"`
-	FirstName          string `json:"firstName"`
-	LastName           string `json:"lastName"`
-	Gender             string `json:"gender"`
-	FatherID           string `json:"fatherID"`
-	MotherID           string `json:"motherID"`
-	SpouseID           string `json:"spouseID"`
+	AssociatedUsername string `json:"associatedUsername,omitempty"`
+	PersonID           string `json:"personID,omitempty"`
+	FirstName          string `json:"firstName,omitempty"`
+	LastName           string `json:"lastName,omitempty"`
+	Gender             string `json:"gender,omitempty"`
+	FatherID           string `json:"fatherID,omitempty"`
+	MotherID           string `json:"motherID,omitempty"`
+	SpouseID           string `json:"spouseID,omitempty"`
 	Success            bool   `json:"success"`
-	Message            string `json:"message"`
+	Message            string `json:"message,omitempty"`
 }
