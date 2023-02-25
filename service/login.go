@@ -66,7 +66,7 @@ func Login(username string, password string) model.LoginResponse {
 		AuthToken: token,
 		UserName:  username,
 		PersonID:  user.PersonID,
-		Success:   false,
+		Success:   true,
 		Message:   "",
 	}
 }
