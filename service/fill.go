@@ -147,14 +147,17 @@ func generatePerson(numGen int, gender string) *model.Person {
 	var father model.Person
 	var mother model.Person
 
+	/*test := &fillPeople
+	fmt.Println(test)*/
+
 	if numGen > 0 {
 
 		// Recursively generate parents
 		father = *generatePerson(numGen-1, "m")
 		mother = *generatePerson(numGen-1, "f")
 
-		mother.SpouseID = father.PersonID
-		father.SpouseID = mother.PersonID
+		updateSpouseID(mother.PersonID, father.PersonID)
+		updateSpouseID(father.PersonID, mother.PersonID)
 
 		generateMarriage(&father, &mother)
 	}
@@ -201,6 +204,16 @@ func generatePerson(numGen int, gender string) *model.Person {
 	}
 
 	return &person
+}
+
+func updateSpouseID(personID string, spouseID string) {
+
+	for person := range fillPeople {
+		if fillPeople[person].PersonID == personID {
+			fillPeople[person].SpouseID = spouseID
+			break
+		}
+	}
 }
 
 func generateBirth(personID string, numGen int) int {
