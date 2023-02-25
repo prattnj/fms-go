@@ -40,6 +40,7 @@ func Register(username string, password string, email string, firstname string, 
 		Gender:    gender,
 		PersonID:  generateID(defaultIDLength),
 	}
+	fillUser = newUser
 	err = dal.U_insert(tx, newUser)
 	if err != nil {
 		err := tx.Rollback()
