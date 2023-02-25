@@ -136,12 +136,12 @@ func generateData(numGen int, gender string) error {
 	rootPerson.FirstName = fillUser.FirstName
 	rootPerson.LastName = fillUser.LastName
 	generateUserBirth()
-	fixLastNames(rootPerson)
+	//fixLastNames(&rootPerson)
 
 	return nil
 }
 
-func generatePerson(numGen int, gender string) *model.Person {
+func generatePerson(numGen int, gender string) model.Person {
 
 	var father model.Person
 	var mother model.Person
@@ -152,10 +152,10 @@ func generatePerson(numGen int, gender string) *model.Person {
 		father := generatePerson(numGen-1, "m")
 		mother := generatePerson(numGen-1, "f")
 
-		(*mother).SpouseID = (*father).PersonID
-		(*father).SpouseID = (*mother).PersonID
+		mother.SpouseID = father.PersonID
+		father.SpouseID = mother.PersonID
 
-		generateMarriage(father, mother)
+		generateMarriage(&father, &mother)
 	}
 
 	personID := generateID(defaultIDLength)
@@ -199,7 +199,7 @@ func generatePerson(numGen int, gender string) *model.Person {
 		generateDeath(personID, birthYear)
 	}
 
-	return &person
+	return person
 }
 
 func generateBirth(personID string, numGen int) int {
