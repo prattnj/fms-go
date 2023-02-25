@@ -152,8 +152,8 @@ func generatePerson(numGen int, gender string) *model.Person {
 		father := generatePerson(numGen-1, "m")
 		mother := generatePerson(numGen-1, "f")
 
-		mother.SpouseID = father.PersonID
-		father.SpouseID = mother.PersonID
+		(*mother).SpouseID = (*father).PersonID
+		(*father).SpouseID = (*mother).PersonID
 
 		generateMarriage(father, mother)
 	}
@@ -171,7 +171,7 @@ func generatePerson(numGen int, gender string) *model.Person {
 	// Generate last name
 	lastName := ""
 	if numGen > 0 {
-		lastName = father.LastName
+		lastName = (*father).LastName
 	} else {
 		lastName = getLastName()
 	}
