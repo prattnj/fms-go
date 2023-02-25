@@ -136,7 +136,7 @@ func generateData(numGen int, gender string) error {
 	rootPerson.FirstName = fillUser.FirstName
 	rootPerson.LastName = fillUser.LastName
 	generateUserBirth()
-	//fixLastNames(&rootPerson)
+	fixLastNames(rootPerson)
 
 	return nil
 }
@@ -188,6 +188,7 @@ func generatePerson(numGen int, gender string) *model.Person {
 		SpouseID:           "",
 	}
 	if numGen > 0 {
+		fmt.Println("hello there")
 		person.FatherID = father.PersonID
 		person.MotherID = mother.PersonID
 	}
