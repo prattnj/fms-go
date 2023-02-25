@@ -12,7 +12,7 @@ func HandleEvent(c echo.Context) error {
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
-		if resp.Message == "Bad token" {
+		if resp.Message == "Error: bad token" {
 			return c.JSON(401, resp)
 		}
 		if resp.Message == "Internal server error" {
@@ -29,7 +29,7 @@ func HandleEventID(c echo.Context) error {
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
-		if resp.Message == "Bad token" {
+		if resp.Message == "Error: bad token" {
 			return c.JSON(401, resp)
 		}
 		if resp.Message == "Internal server error" {

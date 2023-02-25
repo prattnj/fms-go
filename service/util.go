@@ -7,6 +7,7 @@ import (
 
 // Generic 500 response, used in all services
 var serverErrorStr = "Internal server error"
+var tokenErrorStr = "Error: bad token"
 var serverError = model.GenericResponse{Success: false, Message: serverErrorStr}
 
 var defaultIDLength = 32
