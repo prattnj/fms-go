@@ -136,7 +136,7 @@ func generateData(numGen int, gender string) error {
 	rootPerson.FirstName = fillUser.FirstName
 	rootPerson.LastName = fillUser.LastName
 	generateUserBirth()
-	fixLastNames(&rootPerson)
+	//fixLastNames(&rootPerson)
 
 	return nil
 }
