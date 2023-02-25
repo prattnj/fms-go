@@ -149,8 +149,8 @@ func generatePerson(numGen int, gender string) model.Person {
 	if numGen > 0 {
 
 		// Recursively generate parents
-		father := generatePerson(numGen-1, "m")
-		mother := generatePerson(numGen-1, "f")
+		father = generatePerson(numGen-1, "m")
+		mother = generatePerson(numGen-1, "f")
 
 		mother.SpouseID = father.PersonID
 		father.SpouseID = mother.PersonID
@@ -360,19 +360,19 @@ func findFather(child *model.Person) *model.Person {
 }
 
 func getMaleName() string {
-	return (*maleNames)[rand.Intn(len(*maleNames))]
+	return (*maleNames)[r.Intn(len(*maleNames))]
 }
 
 func getFemaleName() string {
-	return (*femaleNames)[rand.Intn(len(*femaleNames))]
+	return (*femaleNames)[r.Intn(len(*femaleNames))]
 }
 
 func getLastName() string {
-	return (*lastNames)[rand.Intn(len(*lastNames))]
+	return (*lastNames)[r.Intn(len(*lastNames))]
 }
 
 func getLocation() model.Location {
-	return (*locations)[rand.Intn(len(*locations))]
+	return (*locations)[r.Intn(len(*locations))]
 }
 
 func instantiateData() (*[]string, *[]string, *[]string, *[]model.Location, error) {
