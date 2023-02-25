@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/prattnj/fms-go/dal"
 	"github.com/prattnj/fms-go/model"
 )
@@ -58,8 +57,7 @@ func Register(username string, password string, email string, firstname string, 
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
-	test := len(fillPeople)
-	fmt.Println(test)
+
 	for person := range fillPeople {
 		err := dal.P_insert(tx, fillPeople[person])
 		if err != nil {
