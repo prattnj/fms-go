@@ -143,8 +143,8 @@ func generateData(numGen int, gender string) error {
 
 func generatePerson(numGen int, gender string) *model.Person {
 
-	var father model.Person
-	var mother model.Person
+	var father *model.Person
+	var mother *model.Person
 
 	if numGen > 0 {
 
@@ -188,7 +188,6 @@ func generatePerson(numGen int, gender string) *model.Person {
 		SpouseID:           "",
 	}
 	if numGen > 0 {
-		fmt.Println("hello there")
 		person.FatherID = father.PersonID
 		person.MotherID = mother.PersonID
 	}
