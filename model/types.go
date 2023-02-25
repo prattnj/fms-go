@@ -25,7 +25,7 @@ type Person struct {
 	Gender             string `json:"gender"`
 	FatherID           string `json:"fatherID,omitempty"`
 	MotherID           string `json:"motherID,omitempty"`
-	SpouseID           string `json:"spouseID"`
+	SpouseID           string `json:"spouseID,omitempty"`
 }
 
 type User struct {
