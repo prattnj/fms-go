@@ -141,7 +141,7 @@ func generateData(numGen int, gender string) error {
 	return nil
 }
 
-func generatePerson(numGen int, gender string) model.Person {
+func generatePerson(numGen int, gender string) *model.Person {
 
 	var father model.Person
 	var mother model.Person
@@ -199,7 +199,7 @@ func generatePerson(numGen int, gender string) model.Person {
 		generateDeath(personID, birthYear)
 	}
 
-	return person
+	return &person
 }
 
 func generateBirth(personID string, numGen int) int {
@@ -285,7 +285,7 @@ func generateDeath(personID string, birthYear int) {
 
 }
 
-func generateMarriage(father model.Person, mother model.Person) {
+func generateMarriage(father *model.Person, mother *model.Person) {
 
 	location := getLocation()
 
