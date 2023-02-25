@@ -132,11 +132,11 @@ func generateData(numGen int, gender string) error {
 	}
 
 	rootPerson := generatePerson(numGen, gender)
-	rootPerson.PersonID = fillUser.PersonID
-	rootPerson.FirstName = fillUser.FirstName
-	rootPerson.LastName = fillUser.LastName
+	(&rootPerson).PersonID = fillUser.PersonID
+	(&rootPerson).FirstName = fillUser.FirstName
+	(&rootPerson).LastName = fillUser.LastName
 	generateUserBirth()
-	//fixLastNames(&rootPerson)
+	fixLastNames(&rootPerson)
 
 	return nil
 }
