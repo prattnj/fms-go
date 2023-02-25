@@ -114,8 +114,8 @@ func Fill(username string, generations string) model.GenericResponse {
 		return serverError
 	}
 
-	return model.GenericResponse{Success: true, Message: "Successfully added " + string(rune(len(fillPeople))) +
-		" persons and " + string(rune(len(fillEvents))) + " events to the database"}
+	return model.GenericResponse{Success: true, Message: "Successfully added " + strconv.Itoa(len(fillPeople)) +
+		" persons and " + strconv.Itoa(len(fillEvents)) + " events to the database"}
 }
 
 // Wrapper method for generatePerson, to clear the arrays
@@ -136,7 +136,6 @@ func generateData(numGen int, gender string) error {
 	rootPerson.FirstName = fillUser.FirstName
 	rootPerson.LastName = fillUser.LastName
 	generateUserBirth()
-	fillPeople = append(fillPeople, &rootPerson)
 	fixLastNames(&rootPerson)
 
 	return nil
