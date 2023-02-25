@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"time"
 )
 
 var fillPeople []*model.Person
@@ -360,18 +361,22 @@ func findFather(child *model.Person) *model.Person {
 }
 
 func getMaleName() string {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return (*maleNames)[r.Intn(len(*maleNames))]
 }
 
 func getFemaleName() string {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return (*femaleNames)[r.Intn(len(*femaleNames))]
 }
 
 func getLastName() string {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return (*lastNames)[r.Intn(len(*lastNames))]
 }
 
 func getLocation() model.Location {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return (*locations)[r.Intn(len(*locations))]
 }
 
