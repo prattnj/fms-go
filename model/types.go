@@ -23,8 +23,8 @@ type Person struct {
 	FirstName          string `json:"firstName"`
 	LastName           string `json:"lastName"`
 	Gender             string `json:"gender"`
-	FatherID           string `json:"fatherID"`
-	MotherID           string `json:"motherID"`
+	FatherID           string `json:"fatherID,omitempty"`
+	MotherID           string `json:"motherID,omitempty"`
 	SpouseID           string `json:"spouseID"`
 }
 
