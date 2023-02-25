@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/prattnj/fms-go/dal"
 	"github.com/prattnj/fms-go/model"
+	"strconv"
 )
 
 func Load(users []model.User, persons []model.Person, events []model.Event) model.GenericResponse {
@@ -67,6 +68,6 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 	if err != nil {
 		return serverError
 	}
-	return model.GenericResponse{Success: true, Message: "Successfully added " + string(rune(len(users))) + " users, " +
-		string(rune(len(persons))) + " persons, and " + string(rune(len(events))) + " events to the database."}
+	return model.GenericResponse{Success: true, Message: "Successfully added " + strconv.Itoa(len(users)) + " users, " +
+		strconv.Itoa(len(persons)) + " persons, and " + strconv.Itoa(len(events)) + " events to the database."}
 }
