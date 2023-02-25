@@ -8,7 +8,7 @@ import (
 func Register(username string, password string, email string, firstname string, lastname string, gender string) model.LoginResponse {
 
 	if gender != "m" && gender != "f" {
-		return model.LoginResponse{Success: false, Message: "Invalid gender (must be 'm' or 'f')"}
+		return model.LoginResponse{Success: false, Message: "Error: invalid gender (must be 'm' or 'f')"}
 	}
 
 	db := dal.Db()
@@ -28,7 +28,7 @@ func Register(username string, password string, email string, firstname string, 
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 	if user.Username != "" {
-		return model.LoginResponse{Success: false, Message: "Username already exists"}
+		return model.LoginResponse{Success: false, Message: "Error: username already exists"}
 	}
 
 	newUser := model.User{

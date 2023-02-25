@@ -8,7 +8,7 @@ import (
 func Login(username string, password string) model.LoginResponse {
 
 	if username == "" || password == "" {
-		return model.LoginResponse{Success: false, Message: "Missing username or password"}
+		return model.LoginResponse{Success: false, Message: "Error: missing username or password"}
 	}
 
 	// Validate username and password
@@ -29,7 +29,7 @@ func Login(username string, password string) model.LoginResponse {
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 	if !valid {
-		return model.LoginResponse{Success: false, Message: "Invalid username or password"}
+		return model.LoginResponse{Success: false, Message: "Error: invalid username or password"}
 	}
 
 	// Generate and return auth token

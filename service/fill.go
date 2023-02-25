@@ -24,16 +24,16 @@ func Fill(username string, generations string) model.GenericResponse {
 
 	// Validate generations
 	if username == "" {
-		return model.GenericResponse{Success: false, Message: "Blank username"}
+		return model.GenericResponse{Success: false, Message: "Error: blank username"}
 	}
 	numGen, err := strconv.Atoi(generations)
 	if err != nil {
-		return model.GenericResponse{Success: false, Message: "Generation number must be an integer"}
+		return model.GenericResponse{Success: false, Message: "Error: generation number must be an integer"}
 	}
 	if numGen < 0 {
-		return model.GenericResponse{Success: false, Message: "Negative number of generations"}
+		return model.GenericResponse{Success: false, Message: "Error: negative number of generations"}
 	} else if numGen > 12 {
-		return model.GenericResponse{Success: false, Message: "Too many generations"}
+		return model.GenericResponse{Success: false, Message: "Error: too many generations"}
 	}
 
 	// Validate username
@@ -54,7 +54,7 @@ func Fill(username string, generations string) model.GenericResponse {
 		return serverError
 	}
 	if fillUser.Username == "" {
-		return model.GenericResponse{Success: false, Message: "Invalid username"}
+		return model.GenericResponse{Success: false, Message: "Error: invalid username"}
 	}
 
 	// Clear persons and events belonging to user

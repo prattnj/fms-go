@@ -11,7 +11,7 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 	// Maximum number of objects allowed in request body
 	var maxObj = 1000
 	if len(users)+len(persons)+len(events) > maxObj {
-		return model.GenericResponse{Success: false, Message: "Request body too large"}
+		return model.GenericResponse{Success: false, Message: "Error: request body too large"}
 	}
 
 	// Clear the database
