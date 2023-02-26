@@ -13,7 +13,7 @@ func HandleLogin(c echo.Context) error {
 	var req model.LoginRequest
 	err := json.NewDecoder(c.Request().Body).Decode(&req)
 	if err != nil {
-		return c.JSON(400, model.GenericResponse{Success: false, Message: err.Error()})
+		return c.JSON(400, model.GenericResponse{Success: false, Message: "Error: improperly formatted request. Details: " + err.Error()})
 	}
 
 	// Perform login and return appropriate response
@@ -34,7 +34,7 @@ func HandleRegister(c echo.Context) error {
 	var req model.RegisterRequest
 	err := json.NewDecoder(c.Request().Body).Decode(&req)
 	if err != nil {
-		return c.JSON(400, model.GenericResponse{Success: false, Message: err.Error()})
+		return c.JSON(400, model.GenericResponse{Success: false, Message: "Error: improperly formatted request. Details: " + err.Error()})
 	}
 
 	// Perform register and return appropriate response

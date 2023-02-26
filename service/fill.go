@@ -33,7 +33,7 @@ func Fill(username string, generations string) model.GenericResponse {
 	}
 	if numGen < 0 {
 		return model.GenericResponse{Success: false, Message: "Error: negative number of generations"}
-	} else if numGen > 12 {
+	} else if numGen > 10 {
 		return model.GenericResponse{Success: false, Message: "Error: too many generations"}
 	}
 
