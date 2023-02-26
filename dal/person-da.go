@@ -14,6 +14,7 @@ func P_insert(tx *sql.Tx, person *model.Person) error {
 	}
 	return nil
 }
+
 func P_find(tx *sql.Tx, id string) (model.Person, error) {
 	rows, err := tx.Query("SELECT * FROM person WHERE personID = ?;", id)
 	if err != nil {

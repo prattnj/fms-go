@@ -147,9 +147,6 @@ func generatePerson(numGen int, gender string) *model.Person {
 	var father model.Person
 	var mother model.Person
 
-	/*test := &fillPeople
-	fmt.Println(test)*/
-
 	if numGen > 0 {
 
 		// Recursively generate parents
