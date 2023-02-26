@@ -59,6 +59,28 @@ func U_getGender(tx *sql.Tx, username string) (string, error) {
 	return user.Gender, nil
 }
 
+func U_getCount(tx *sql.Tx) (int, error) {
+	rows, err := tx.Query("SELECT COUNT(*) FROM user;")
+	if err != nil {
+		return 0, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("Error closing rows:", err)
+		}
+	}(rows)
+	var count int
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+		return count, nil
+	}
+	return 0, nil
+}
+
 func U_clear(tx *sql.Tx) error {
 	_, err := tx.Exec("DELETE FROM user;")
 	if err != nil {

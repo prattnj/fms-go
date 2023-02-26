@@ -7,10 +7,6 @@ import (
 
 func Register(username string, password string, email string, firstname string, lastname string, gender string) model.LoginResponse {
 
-	if gender != "m" && gender != "f" {
-		return model.LoginResponse{Success: false, Message: "Error: invalid gender (must be 'm' or 'f')"}
-	}
-
 	db := dal.Db()
 	if db == nil {
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -19,6 +15,23 @@ func Register(username string, password string, email string, firstname string, 
 	if err != nil {
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
+
+	count, err := dal.U_getCount(tx)
+	if err != nil {
+		err := tx.Rollback()
+		if err != nil {
+			return model.LoginResponse{Success: false, Message: serverErrorStr}
+		}
+		return model.LoginResponse{Success: false, Message: serverErrorStr}
+	}
+	if count >= 100 {
+		return model.LoginResponse{Success: false, Message: "Error: too many registered users"}
+	}
+
+	if gender != "m" && gender != "f" {
+		return model.LoginResponse{Success: false, Message: "Error: invalid gender (must be 'm' or 'f')"}
+	}
+
 	user, err := dal.U_find(tx, username)
 	if err != nil {
 		err := tx.Rollback()
