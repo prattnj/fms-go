@@ -14,7 +14,7 @@ func HandleFill(c echo.Context) error {
 		generations = "4"
 	}
 	resp := service.Fill(username, generations)
-	service.Log(c.Path(), c.RealIP(), resp.Success)
+	service.Log(compileFillPath(username, generations), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
@@ -23,4 +23,8 @@ func HandleFill(c echo.Context) error {
 		}
 		return c.JSON(400, resp)
 	}
+}
+
+func compileFillPath(username string, generations string) string {
+	return "/fill/" + username + "/" + generations
 }
