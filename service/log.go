@@ -20,7 +20,7 @@ func Log(endpoint string, ipv4 string, success bool) model.GenericResponse {
 		return serverError
 	}
 
-	logObj := model.Log{Timestamp: time.Now().Unix(), Endpoint: endpoint, IPv4: ipv4, Success: success}
+	logObj := model.Log{Timestamp: time.Now().UnixMilli(), Endpoint: endpoint, IPv4: ipv4, Success: success}
 	err = dal.L_insert(tx, logObj)
 	if err != nil {
 		logError(err.Error())
