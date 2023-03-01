@@ -38,6 +38,13 @@ type User struct {
 	PersonID  string `json:"personID"`
 }
 
+type Log struct {
+	Timestamp int64  `json:"timestamp"`
+	Endpoint  string `json:"endpoint"`
+	IPv4      string `json:"ipv4"`
+	Success   bool   `json:"success"`
+}
+
 type Location struct {
 	Country   string  `json:"country"`
 	City      string  `json:"city"`

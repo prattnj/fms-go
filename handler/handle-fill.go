@@ -14,6 +14,7 @@ func HandleFill(c echo.Context) error {
 		generations = "4"
 	}
 	resp := service.Fill(username, generations)
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {

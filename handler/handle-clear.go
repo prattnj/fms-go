@@ -15,6 +15,7 @@ func HandleClear(c echo.Context) error {
 
 	// Perform clear and return appropriate response
 	resp := service.Clear()
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {

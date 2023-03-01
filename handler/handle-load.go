@@ -23,6 +23,7 @@ func HandleLoad(c echo.Context) error {
 
 	// Perform load and return appropriate response
 	resp := service.Load(req.Users, req.Persons, req.Events)
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {

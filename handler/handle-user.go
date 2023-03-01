@@ -18,6 +18,7 @@ func HandleLogin(c echo.Context) error {
 
 	// Perform login and return appropriate response
 	resp := service.Login(req.Username, req.Password)
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
@@ -39,6 +40,7 @@ func HandleRegister(c echo.Context) error {
 
 	// Perform register and return appropriate response
 	resp := service.Register(req.Username, req.Password, req.Email, req.FirstName, req.LastName, req.Gender)
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {

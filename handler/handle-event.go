@@ -9,6 +9,7 @@ func HandleEvent(c echo.Context) error {
 
 	// Perform event service and return appropriate response
 	resp := service.Event(c.Request().Header.Get("Authorization"))
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
@@ -26,6 +27,7 @@ func HandleEventID(c echo.Context) error {
 
 	// Perform eventID service and return appropriate response
 	resp := service.EventID(c.Request().Header.Get("Authorization"), c.Param("eventID"))
+	service.Log(c.Path(), c.RealIP(), resp.Success)
 	if resp.Success {
 		return c.JSON(200, resp)
 	} else {
