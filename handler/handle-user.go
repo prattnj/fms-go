@@ -13,6 +13,7 @@ func HandleLogin(c echo.Context) error {
 	var req model.LoginRequest
 	err := json.NewDecoder(c.Request().Body).Decode(&req)
 	if err != nil {
+		service.Log(c.Path(), c.RealIP(), false)
 		return c.JSON(400, model.GenericResponse{Success: false, Message: "Error: improperly formatted request. Details: " + err.Error()})
 	}
 
@@ -35,6 +36,7 @@ func HandleRegister(c echo.Context) error {
 	var req model.RegisterRequest
 	err := json.NewDecoder(c.Request().Body).Decode(&req)
 	if err != nil {
+		service.Log(c.Path(), c.RealIP(), false)
 		return c.JSON(400, model.GenericResponse{Success: false, Message: "Error: improperly formatted request. Details: " + err.Error()})
 	}
 

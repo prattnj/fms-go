@@ -11,6 +11,7 @@ import (
 func HandleLoad(c echo.Context) error {
 
 	if c.Request().Header.Get("Authorization") != dal.GetPassword() {
+		service.Log(c.Path(), c.RealIP(), false)
 		return c.JSON(401, model.GenericResponse{Success: false, Message: "Bad token"})
 	}
 
@@ -18,6 +19,7 @@ func HandleLoad(c echo.Context) error {
 	var req model.LoadRequest
 	err := json.NewDecoder(c.Request().Body).Decode(&req)
 	if err != nil {
+		service.Log(c.Path(), c.RealIP(), false)
 		return c.JSON(400, model.GenericResponse{Success: false, Message: "Error: improperly formatted request. Details: " + err.Error()})
 	}
 

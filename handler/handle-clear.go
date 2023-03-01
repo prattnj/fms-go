@@ -10,6 +10,7 @@ import (
 func HandleClear(c echo.Context) error {
 
 	if c.Request().Header.Get("Authorization") != dal.GetPassword() {
+		service.Log(c.Path(), c.RealIP(), false)
 		return c.JSON(401, model.GenericResponse{Success: false, Message: "Bad token"})
 	}
 
