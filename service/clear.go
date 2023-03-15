@@ -22,19 +22,13 @@ func Clear() model.GenericResponse {
 	err4 := dal.E_clear(tx)
 
 	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return serverError
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return serverError
 	}
 	return model.GenericResponse{Success: true, Message: "Clear succeeded"}

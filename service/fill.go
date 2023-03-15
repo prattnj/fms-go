@@ -48,29 +48,29 @@ func Fill(username string, generations string) model.GenericResponse {
 	}
 	fillUser, err = dal.U_find(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError
 	}
 	if fillUser.Username == "" {
+		if commitAndClose(tx, db, false) != nil {
+			return serverError
+		}
 		return model.GenericResponse{Success: false, Message: "Error: invalid username"}
 	}
 
 	// Clear persons and events belonging to user
 	err = dal.P_clearForUser(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError
 	}
 	err = dal.E_clearForUser(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError
@@ -79,8 +79,7 @@ func Fill(username string, generations string) model.GenericResponse {
 	// Fill the database
 	err = generateData(numGen, fillUser.Gender)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError
@@ -88,8 +87,7 @@ func Fill(username string, generations string) model.GenericResponse {
 	for person := range fillPeople {
 		err := dal.P_insert(tx, fillPeople[person])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return serverError
 			}
 			return serverError
@@ -98,20 +96,14 @@ func Fill(username string, generations string) model.GenericResponse {
 	for event := range fillEvents {
 		err := dal.E_insert(tx, fillEvents[event])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return serverError
 			}
 			return serverError
 		}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return serverError
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return serverError
 	}
 

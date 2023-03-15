@@ -22,30 +22,26 @@ func Event(authtoken string) model.EventResponse {
 
 	username, err := dal.T_getUsername(tx, authtoken)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.EventResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.EventResponse{Success: false, Message: serverErrorStr}
 	}
 	if username == "" {
+		if commitAndClose(tx, db, false) != nil {
+			return model.EventResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.EventResponse{Success: false, Message: tokenErrorStr}
 	}
 	events, err := dal.E_getForUsername(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.EventResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.EventResponse{Success: false, Message: serverErrorStr}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return model.EventResponse{Success: false, Message: serverErrorStr}
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.EventResponse{Success: false, Message: serverErrorStr}
 	}
 
@@ -75,8 +71,7 @@ func EventID(authtoken string, eventID string) model.EventIDResponse {
 
 	username, err := dal.T_getUsername(tx, authtoken)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.EventIDResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.EventIDResponse{Success: false, Message: serverErrorStr}
@@ -86,25 +81,25 @@ func EventID(authtoken string, eventID string) model.EventIDResponse {
 	}
 	event, err := dal.E_find(tx, eventID)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.EventIDResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.EventIDResponse{Success: false, Message: serverErrorStr}
 	}
 	if event.EventID == "" {
+		if commitAndClose(tx, db, false) != nil {
+			return model.EventIDResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.EventIDResponse{Success: false, Message: "Error: event does not exist"}
 	}
 	if event.AssociatedUsername != username {
+		if commitAndClose(tx, db, false) != nil {
+			return model.EventIDResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.EventIDResponse{Success: false, Message: "Error: event does not belong to this user"}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return model.EventIDResponse{Success: false, Message: serverErrorStr}
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.EventIDResponse{Success: false, Message: serverErrorStr}
 	}
 

@@ -32,8 +32,7 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 	for user := range users {
 		err := dal.U_insert(tx, users[user])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return serverError
 			}
 			return serverError
@@ -42,8 +41,7 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 	for person := range persons {
 		err := dal.P_insert(tx, &persons[person])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return serverError
 			}
 			return serverError
@@ -52,22 +50,17 @@ func Load(users []model.User, persons []model.Person, events []model.Event) mode
 	for event := range events {
 		err := dal.E_insert(tx, &events[event])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return serverError
 			}
 			return serverError
 		}
 	}
 
-	err = tx.Commit()
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return serverError
 	}
-	err = dal.DbClose(db)
-	if err != nil {
-		return serverError
-	}
+
 	return model.GenericResponse{Success: true, Message: "Successfully added " + strconv.Itoa(len(users)) + " users, " +
 		strconv.Itoa(len(persons)) + " persons, and " + strconv.Itoa(len(events)) + " events to the database."}
 }

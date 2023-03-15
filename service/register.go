@@ -18,24 +18,28 @@ func Register(username string, password string, email string, firstname string, 
 
 	count, err := dal.U_getCount(tx)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 	if count >= 100 {
+		if commitAndClose(tx, db, false) != nil {
+			return model.LoginResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.LoginResponse{Success: false, Message: "Error: too many registered users"}
 	}
 
 	if gender != "m" && gender != "f" {
+		if commitAndClose(tx, db, false) != nil {
+			return model.LoginResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.LoginResponse{Success: false, Message: "Error: invalid gender (must be 'm' or 'f')"}
 	}
 
 	user, err := dal.U_find(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -56,8 +60,7 @@ func Register(username string, password string, email string, firstname string, 
 	fillUser = newUser
 	err = dal.U_insert(tx, newUser)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -65,8 +68,7 @@ func Register(username string, password string, email string, firstname string, 
 
 	err = generateData(4, gender)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -75,8 +77,7 @@ func Register(username string, password string, email string, firstname string, 
 	for person := range fillPeople {
 		err := dal.P_insert(tx, fillPeople[person])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return model.LoginResponse{Success: false, Message: serverErrorStr}
 			}
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -85,8 +86,7 @@ func Register(username string, password string, email string, firstname string, 
 	for event := range fillEvents {
 		err := dal.E_insert(tx, fillEvents[event])
 		if err != nil {
-			err := tx.Rollback()
-			if err != nil {
+			if commitAndClose(tx, db, false) != nil {
 				return model.LoginResponse{Success: false, Message: serverErrorStr}
 			}
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -99,19 +99,13 @@ func Register(username string, password string, email string, firstname string, 
 		Username:  username,
 	})
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return model.LoginResponse{Success: false, Message: serverErrorStr}
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 

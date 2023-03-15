@@ -22,8 +22,7 @@ func Person(authtoken string) model.PersonResponse {
 
 	username, err := dal.T_getUsername(tx, authtoken)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.PersonResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.PersonResponse{Success: false, Message: serverErrorStr}
@@ -33,19 +32,13 @@ func Person(authtoken string) model.PersonResponse {
 	}
 	persons, err := dal.P_getForUsername(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.PersonResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.PersonResponse{Success: false, Message: serverErrorStr}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return model.PersonResponse{Success: false, Message: serverErrorStr}
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.PersonResponse{Success: false, Message: serverErrorStr}
 	}
 
@@ -75,8 +68,7 @@ func PersonID(authtoken string, personID string) model.PersonIDResponse {
 
 	username, err := dal.T_getUsername(tx, authtoken)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.PersonIDResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.PersonIDResponse{Success: false, Message: serverErrorStr}
@@ -86,25 +78,25 @@ func PersonID(authtoken string, personID string) model.PersonIDResponse {
 	}
 	person, err := dal.P_find(tx, personID)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.PersonIDResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.PersonIDResponse{Success: false, Message: serverErrorStr}
 	}
 	if person.PersonID == "" {
+		if commitAndClose(tx, db, false) != nil {
+			return model.PersonIDResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.PersonIDResponse{Success: false, Message: "Error: person does not exist"}
 	}
 	if person.AssociatedUsername != username {
+		if commitAndClose(tx, db, false) != nil {
+			return model.PersonIDResponse{Success: false, Message: serverErrorStr}
+		}
 		return model.PersonIDResponse{Success: false, Message: "Error: person does not belong to this user"}
 	}
 
-	err = tx.Commit()
-	if err != nil {
-		return model.PersonIDResponse{Success: false, Message: serverErrorStr}
-	}
-	err = dal.DbClose(db)
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.PersonIDResponse{Success: false, Message: serverErrorStr}
 	}
 

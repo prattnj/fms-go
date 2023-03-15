@@ -17,6 +17,9 @@ func Log(endpoint string, ipv4 string, success bool) model.GenericResponse {
 	tx, err := db.Begin()
 	if err != nil {
 		logError(err.Error())
+		if commitAndClose(tx, db, false) != nil {
+			return serverError
+		}
 		return serverError
 	}
 
@@ -24,8 +27,7 @@ func Log(endpoint string, ipv4 string, success bool) model.GenericResponse {
 	err = dal.L_insert(tx, logObj)
 	if err != nil {
 		logError(err.Error())
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return serverError
 		}
 		return serverError

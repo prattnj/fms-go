@@ -22,8 +22,7 @@ func Login(username string, password string) model.LoginResponse {
 	}
 	valid, err := dal.U_validate(tx, username, password)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -35,8 +34,7 @@ func Login(username string, password string) model.LoginResponse {
 	// Generate and return auth token
 	user, err := dal.U_find(tx, username)
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
@@ -47,18 +45,12 @@ func Login(username string, password string) model.LoginResponse {
 		Username:  username,
 	})
 	if err != nil {
-		err := tx.Rollback()
-		if err != nil {
+		if commitAndClose(tx, db, false) != nil {
 			return model.LoginResponse{Success: false, Message: serverErrorStr}
 		}
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
-	err = tx.Commit()
-	if err != nil {
-		return model.LoginResponse{Success: false, Message: serverErrorStr}
-	}
-	err = db.Close()
-	if err != nil {
+	if commitAndClose(tx, db, true) != nil {
 		return model.LoginResponse{Success: false, Message: serverErrorStr}
 	}
 
