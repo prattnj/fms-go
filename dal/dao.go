@@ -1,7 +1,6 @@
 package dal
 
 import (
-	"bufio"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -9,7 +8,7 @@ import (
 )
 
 func Db() *sql.DB {
-	password := GetPassword()
+	password := os.Getenv("MYSQL_PASSWORD")
 	if password == "" {
 		return nil
 	}
@@ -24,7 +23,6 @@ func Db() *sql.DB {
 		return nil
 	}
 	return database
-
 }
 
 func DbClose(db *sql.DB) error {
@@ -33,24 +31,4 @@ func DbClose(db *sql.DB) error {
 		return err
 	}
 	return nil
-}
-
-func GetPassword() string {
-	file, err := os.Open("nogit.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return ""
-	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Println("Error closing file:", err)
-		}
-	}(file)
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		return scanner.Text()
-	}
-	return ""
 }
